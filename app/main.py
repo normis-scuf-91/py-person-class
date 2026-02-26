@@ -7,13 +7,18 @@ class Person:
         Person.people[name] = self
 
 
-def create_person_list(people: list) -> list:
-    result = [Person(ind.get("name"), ind.get("age")) for ind in people]
-    for pers in people:
-        part = pers.get("wife")
-        if part:
-            Person.people[pers["name"]].wife = Person.people[part]
-        part = pers.get("husband")
-        if part:
-            Person.people[pers["name"]].husband = Person.people[part]
-    return result
+def create_person_list(people_list: list[dict]) -> list:
+    objects_list = [
+        Person(individual.get("name"), individual.get("age"))
+        for individual in people_list
+    ]
+
+    for i, individual in enumerate(people_list):
+        partner = individual.get("wife")
+        if partner:
+            objects_list[i].wife = Person.people.get(partner)
+        partner = individual.get("husband")
+        if partner:
+            objects_list[i].husband = Person.people.get(partner)
+
+    return objects_list
